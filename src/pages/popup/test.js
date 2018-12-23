@@ -6,20 +6,20 @@ import App from './App';
 import { configure } from 'enzyme';
 
 configure({ adapter: new Adapter() });
-describe ('<App />', () => {
+describe('<App />', () => {
   it('renders 1 <App /> component', () => {
     const component = shallow(<App />);
     expect(component).toHaveLength(1);
-  })
-})
+  });
+});
 describe('actions', () => {
   it('schould add a new tab', () => {
-    const urlList = "http://www.google.com";
+    const urlList = 'http://www.google.com';
     const add = {
-      type: "ADD",
+      type: 'ADD',
       urlList,
-      expiry: new Date().getTime(),
-    }
+      expiry: new Date().getTime()
+    };
     expect(actions.addBookmark(urlList)).toEqual(add);
-  })
-})
+  });
+});

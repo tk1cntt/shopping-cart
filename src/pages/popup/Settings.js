@@ -1,14 +1,14 @@
-import { Store } from "react-chrome-redux";
-import React, { Component } from "react";
-import "./settings.css";
-import "./App";
-import { Link } from "react-router-dom";
-import { connect } from "react-redux";
+import { Store } from 'react-chrome-redux';
+import React, { Component } from 'react';
+import './settings.css';
+import './App';
+import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
 import {
   toggleButton,
   toggleButtonHistory,
   expireDate
-} from "../background/actions";
+} from '../background/actions';
 
 class Settings extends React.Component {
   // ======================== RENDERING
@@ -18,7 +18,7 @@ class Settings extends React.Component {
       <div>
         <div className="header">
           <h1>Settings</h1>
-          <Link to={"/pages/popup.html"} style={{ color: "black" }}>
+          <Link to={'/pages/popup.html'} style={{ color: 'black' }}>
             <i class="fa fa-check fa-2x" />
           </Link>
         </div>
@@ -76,4 +76,7 @@ const mapDispatchToProps = dispatch => ({
   expire: date => dispatch(expireDate(date))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Settings);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Settings);

@@ -1,5 +1,5 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import {
   refreshBookmark,
   deleteAllBookmark,
@@ -7,12 +7,14 @@ import {
   addBookmark,
   addFromButton
 } from "../background/actions";
-import "./dashboard.css";
-import ListView from "./ListView.js";
-import Settings from "./Settings";
-import Search from "./Search";
-import truncate from "truncate";
-import { Link } from "react-router-dom";
+} from '../background/actions';
+import './dashboard.css';
+import ListView from './ListView.js';
+import Settings from './Settings';
+import Search from './Search';
+import Login from './Login';
+import truncate from 'truncate';
+import { Link } from 'react-router-dom';
 
 class Dashboard extends React.Component {
   constructor(props) {
@@ -25,7 +27,7 @@ class Dashboard extends React.Component {
         resolved(data);
       });
     }).then(link => {
-      if (!link[0].favIconUrl) link[0].favIconUrl = "../assets/nothing.png";
+      if (!link[0].favIconUrl) link[0].favIconUrl = '../assets/nothing.png';
       if (link[0].title.length > 10)
         link[0].title = truncate(link[0].title.toString(), 50);
       const flag = this.checkUrl(link);
@@ -60,7 +62,7 @@ class Dashboard extends React.Component {
 
     this.props.bookmark.tabs.map(tab => {
       if (tab.expiry >= this.props.settings.expireDate + Date.now()) {
-        store.dispatch({ type: "EXPIRY", url: tab.tab[0].url });
+        store.dispatch({ type: 'EXPIRY', url: tab.tab[0].url });
       }
     });
   }
@@ -76,7 +78,7 @@ class Dashboard extends React.Component {
             expirySettings={this.props.settings.expireDate}
           />
           <div
-            className={this.props.settings.buttonHistory ? "visible" : "hidden"}
+            className={this.props.settings.buttonHistory ? 'visible' : 'hidden'}
           >
             <h2 className="history">History</h2>
             <ListView
@@ -102,9 +104,10 @@ class Dashboard extends React.Component {
 
     return (
       <div>
+        <Login login={this.props.login} />
         <div className="header">
           <h1>Pin Tabs</h1>
-          <Link to={"/pages/settings"} style={{ color: "black" }}>
+          <Link to={'/pages/settings'} style={{ color: 'black' }}>
             <i class="fa fa-cog fa-2x" />
           </Link>
         </div>
@@ -155,4 +158,7 @@ const mapDispatchToProps = dispatch => ({
   addThroughButton: flag => dispatch(addFromButton(flag))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Dashboard);

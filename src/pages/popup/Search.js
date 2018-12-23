@@ -1,12 +1,12 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import "./search.css";
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import './search.css';
 import {
   searchBookmark,
   emptySearch,
   toggleSearch
-} from "../background/actions";
-import ListView from "./ListView";
+} from '../background/actions';
+import ListView from './ListView';
 class Search extends React.Component {
   findTab = () => {
     if (this.props.bookmark.search) {
@@ -55,4 +55,7 @@ const mapDispatchToProps = dispatch => ({
   displaySearch: classValue => dispatch(toggleSearch(classValue))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Search);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Search);

@@ -4,14 +4,11 @@ import randomId from 'uuid/v4';
 import ItemView from './ItemView';
 
 export default class ListView extends React.Component {
-
-  renderTabs () {
+  renderTabs() {
     if (this.props.tabs.length < 1) {
-      return (
-        <h2 className='empty-list'>No tabs to show :(</h2>
-      )
+      return <h2 className="empty-list">No tabs to show :(</h2>;
     }
-    return this.props.tabs.map (tab => {
+    return this.props.tabs.map(tab => {
       return (
         <ItemView
           key={randomId()}
@@ -22,16 +19,12 @@ export default class ListView extends React.Component {
           expiry={tab.expiry}
           expirySettings={this.props.expirySettings}
           expired={this.props.expired}
-        ></ItemView>
-      )
+        />
+      );
     });
   }
 
-  render () {
-    return (
-      <div>
-        {this.renderTabs()}
-      </div>
-    )
+  render() {
+    return <div>{this.renderTabs()}</div>;
   }
 }

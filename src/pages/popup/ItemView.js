@@ -1,5 +1,5 @@
-import React, { Component } from "react";
-import "./item-view.css";
+import React, { Component } from 'react';
+import './item-view.css';
 
 export default class ItemView extends React.Component {
   checkDeleteButton() {
@@ -29,20 +29,20 @@ export default class ItemView extends React.Component {
 
     if (seconds < 60) {
       Math.floor(seconds) === 1
-        ? (timeLeft = Math.floor(seconds) + " second")
-        : (timeLeft = Math.floor(seconds) + " seconds");
+        ? (timeLeft = Math.floor(seconds) + ' second')
+        : (timeLeft = Math.floor(seconds) + ' seconds');
     } else if (minutes < 60) {
       Math.floor(minutes) === 1
-        ? (timeLeft = Math.floor(minutes) + " minute")
-        : (timeLeft = Math.floor(minutes) + " minutes");
+        ? (timeLeft = Math.floor(minutes) + ' minute')
+        : (timeLeft = Math.floor(minutes) + ' minutes');
     } else if (hours < 24) {
       Math.floor(hours) === 1
-        ? (timeLeft = Math.floor(hours) + " hour")
-        : (timeLeft = Math.floor(hours) + " hours");
+        ? (timeLeft = Math.floor(hours) + ' hour')
+        : (timeLeft = Math.floor(hours) + ' hours');
     } else {
       Math.floor(days) === 1
-        ? (timeLeft = Math.floor(days) + " day")
-        : (timeLeft = Math.floor(days) + " days");
+        ? (timeLeft = Math.floor(days) + ' day')
+        : (timeLeft = Math.floor(days) + ' days');
     }
     return <div className="col-1-2 warning">Expires in {timeLeft}</div>;
   }

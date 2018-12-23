@@ -1,11 +1,21 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { Form, Icon, Input, Button, Checkbox } from 'antd';
 
-// import { login } from '../api/api';
+import { login, getSession } from '../api/api';
+
+import {
+  loginStart,
+  loginError,
+  loginSuccess,
+  getSessionStart,
+  getSessionError,
+  getSessionSuccess
+} from '../background/actions';
 
 const FormItem = Form.Item;
 
-export default class Login extends React.Component {
+class Login extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -28,18 +38,23 @@ export default class Login extends React.Component {
 
   login = () => {
     const { username, password } = this.state;
-    this.props.login(username, password, true);
-    /*
-    login(username, password, true, json => {
-      console.log('login', json);
-      if (json.status) {
+    this.props.loginStart();
+    login(username, password, jsonLogin => {
+      console.log('login', jsonLogin);
+      if (jsonLogin.status) {
+        this.props.loginError(jsonLogin);
       } else {
-        // this.props.save("token", json.id_token);
-        localStorage.setItem('token', json.id_token);
+        this.props.loginSuccess(jsonLogin);
+        getSession(jsonLogin.id_token, jsonSession => {
+          console.log('getSession', jsonSession);
+          if (jsonSession.status) {
+            this.props.getSessionError(jsonSession);
+          } else {
+            this.props.getSessionSuccess(jsonSession);
+          }
+        });
       }
     });
-    // console.log("Login");
-    */
   };
 
   render() {
@@ -81,3 +96,21 @@ export default class Login extends React.Component {
     );
   }
 }
+
+const mapStateToProps = state => ({
+  authentication: state.authentication
+});
+
+const mapDispatchToProps = dispatch => ({
+  loginStart: () => dispatch(loginStart()),
+  loginError: data => dispatch(loginError(data)),
+  loginSuccess: data => dispatch(loginSuccess(data)),
+  getSessionStart: () => dispatch(getSessionStart()),
+  getSessionError: data => dispatch(getSessionError(data)),
+  getSessionSuccess: data => dispatch(getSessionSuccess(data))
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Login);

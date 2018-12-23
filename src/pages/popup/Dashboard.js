@@ -5,8 +5,7 @@ import {
   deleteAllBookmark,
   deleteOneBookmark,
   addBookmark,
-  addFromButton,
-  login
+  addFromButton
 } from '../background/actions';
 import './dashboard.css';
 import ListView from './ListView.js';
@@ -54,7 +53,7 @@ class Dashboard extends React.Component {
 
   deleteTab = url => {
     this.props.deleteOne(url);
-    return data;
+    return url;
   };
 
   componentDidMount() {
@@ -101,12 +100,15 @@ class Dashboard extends React.Component {
       this.saveBookmark();
       this.props.addThroughButton(false);
     }
-
+    const { authentication } = this.props;
+    console.log('Dashboard', authentication);
+    if (!authentication.isAuthenticated) {
+      return <Login />;
+    }
     return (
       <div>
-        <Login login={this.props.login} />
         <div className="header">
-          <h1>Pin Tabs</h1>
+          <h1>Pin Tabs of {authentication.account.login}</h1>
           <Link to={'/pages/settings'} style={{ color: 'black' }}>
             <i class="fa fa-cog fa-2x" />
           </Link>
@@ -147,7 +149,8 @@ class Dashboard extends React.Component {
 const mapStateToProps = state => ({
   bookmark: state.bookmark,
   settings: state.settings,
-  animation: state.animation
+  animation: state.animation,
+  authentication: state.authentication
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -155,8 +158,7 @@ const mapDispatchToProps = dispatch => ({
   refresh: data => dispatch(refreshBookmark(data)),
   deleteAll: () => dispatch(deleteAllBookmark()),
   deleteOne: url => dispatch(deleteOneBookmark(url)),
-  addThroughButton: flag => dispatch(addFromButton(flag)),
-  login: data => dispatch(login(data))
+  addThroughButton: flag => dispatch(addFromButton(flag))
 });
 
 export default connect(

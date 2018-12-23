@@ -21,7 +21,7 @@
   },
   "license": "MIT",
   "scripts": {
-    "prettier": "prettier --single-quote --jsx-single-quote --write \"src/pages/**/*.{json,js,jsx,css,scss}\"",
+    "prettier": "prettier --single-quote --write \"src/pages/**/*.{json,js,jsx,css,scss}\"",
     "build": "webpack --watch --progress",
     "test": "jest --coverage",
     "test:watch": "npm test --watch"

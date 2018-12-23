@@ -1,10 +1,31 @@
 //BOOKMARKS ACTIONS
 
-export const login = (username, password, rememberMe) => ({
-    type: 'LOGIN_START',
-    username,
-    password,
-    rememberMe
+export const loginStart = () => ({
+  type: 'LOGIN_START'
+});
+
+export const loginError = data => ({
+  type: 'LOGIN_ERROR',
+  data
+});
+
+export const loginSuccess = data => ({
+  type: 'LOGIN_SUCCESS',
+  data
+});
+
+export const getSessionStart = () => ({
+  type: 'GET_SESSION_START'
+});
+
+export const getSessionError = data => ({
+  type: 'GET_SESSION_ERROR',
+  data
+});
+
+export const getSessionSuccess = data => ({
+  type: 'GET_SESSION_SUCCESS',
+  data
 });
 
 export const refreshBookmark = (data, time) => ({

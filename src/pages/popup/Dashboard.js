@@ -5,8 +5,8 @@ import {
   deleteAllBookmark,
   deleteOneBookmark,
   addBookmark,
-  addFromButton
-} from "../background/actions";
+  addFromButton,
+  login
 } from '../background/actions';
 import './dashboard.css';
 import ListView from './ListView.js';
@@ -155,7 +155,8 @@ const mapDispatchToProps = dispatch => ({
   refresh: data => dispatch(refreshBookmark(data)),
   deleteAll: () => dispatch(deleteAllBookmark()),
   deleteOne: url => dispatch(deleteOneBookmark(url)),
-  addThroughButton: flag => dispatch(addFromButton(flag))
+  addThroughButton: flag => dispatch(addFromButton(flag)),
+  login: data => dispatch(login(data))
 });
 
 export default connect(

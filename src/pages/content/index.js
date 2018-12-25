@@ -42,45 +42,47 @@ export default class InjectApp extends Component {
     if (document.getElementsByClassName('tm-price')[0]) {
       var priceFormat = document.getElementsByClassName('tm-price')[0]
         .innerText;
-      console.log();
 
       var convertPrice = '';
       if (this.checkMultiPrice(priceFormat)) {
         var priceText = document.getElementsByClassName('tm-price')[0]
           .innerText;
-        console.log(priceText);
         let priceParts = priceText.split('-');
         convertPrice =
           this.numberWithCommas(Number.parseInt(priceParts[0]) * 3123) +
           ' - ' +
           this.numberWithCommas(Number.parseInt(priceParts[1]) * 3123);
       } else {
-        convertPrice =
-          Number.parseInt(
-            document.getElementsByClassName('tm-price')[0].innerText
-          ) * 3123;
+        convertPrice = this.numberWithCommas(
+          Number.parseInt(priceFormat) * 3123
+        );
       }
 
       document.getElementsByClassName('tm-price')[0].innerHTML =
-        convertPrice + ' đồng';
+        convertPrice + 'đ';
     }
   };
 
   translate = () => {
-    var metatits = document.getElementsByClassName('tb-metatit');
-    var i = 0;
-    for (i = 0; i < metatits.length; i++) {
-      console.log(metatits[i]);
-      if (metatits[i].innerText === '数量') {
-        document.getElementsByClassName('tb-metatit')[i].innerHTML =
-          'Khối lượng';
-      }
-      if (metatits[i].innerText === '化妆品净含量') {
-        document.getElementsByClassName('tb-metatit')[i].innerHTML =
-          'Khối lượng mỹ phẩm';
+    if (document.getElementsByClassName('tb-metatit')) {
+      var metatits = document.getElementsByClassName('tb-metatit');
+      var i = 0;
+      for (i = 0; i < metatits.length; i++) {
+        console.log(metatits[i]);
+        if (metatits[i].innerText === '数量') {
+          document.getElementsByClassName('tb-metatit')[i].innerHTML =
+            'Khối lượng';
+        }
+        if (metatits[i].innerText === '化妆品净含量') {
+          document.getElementsByClassName('tb-metatit')[i].innerHTML =
+            'Khối lượng mỹ phẩm';
+        }
       }
     }
-    document.getElementsByClassName('mui-amount-unit')[0].innerHTML = 'cái';
+
+    if (document.getElementsByClassName('mui-amount-unit')[0])
+      document.getElementsByClassName('mui-amount-unit')[0].innerHTML =
+        'Sản phẩm';
   };
 
   render() {

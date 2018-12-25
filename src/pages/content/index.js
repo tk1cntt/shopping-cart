@@ -15,6 +15,74 @@ export default class InjectApp extends Component {
     this.classButtonDetail = '';
     this.classPopupDetail = '';
   }
+
+  componentDidMount() {
+    setTimeout(() => {
+      this.translate();
+    }, 3000);
+    setTimeout(() => {
+      this.convertMoney();
+    }, 7000);
+  }
+
+  checkMultiPrice(input) {
+    return /(\d+\.\d{1,2})-(\d+\.\d{1,2})/.test(input);
+  }
+
+  numberWithCommas(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  }
+
+  convertMoney = () => {
+    if (document.getElementsByClassName('tb-metatit')[0])
+      document.getElementsByClassName('tb-metatit')[0].innerHTML = 'Giá';
+    // Remove tm-yen
+    if (document.getElementsByClassName('tm-yen')[0])
+      document.getElementsByClassName('tm-yen')[0].innerHTML = '';
+    if (document.getElementsByClassName('tm-price')[0]) {
+      var priceFormat = document.getElementsByClassName('tm-price')[0]
+        .innerText;
+      console.log();
+
+      var convertPrice = '';
+      if (this.checkMultiPrice(priceFormat)) {
+        var priceText = document.getElementsByClassName('tm-price')[0]
+          .innerText;
+        console.log(priceText);
+        let priceParts = priceText.split('-');
+        convertPrice =
+          this.numberWithCommas(Number.parseInt(priceParts[0]) * 3123) +
+          ' - ' +
+          this.numberWithCommas(Number.parseInt(priceParts[1]) * 3123);
+      } else {
+        convertPrice =
+          Number.parseInt(
+            document.getElementsByClassName('tm-price')[0].innerText
+          ) * 3123;
+      }
+
+      document.getElementsByClassName('tm-price')[0].innerHTML =
+        convertPrice + ' đồng';
+    }
+  };
+
+  translate = () => {
+    var metatits = document.getElementsByClassName('tb-metatit');
+    var i = 0;
+    for (i = 0; i < metatits.length; i++) {
+      console.log(metatits[i]);
+      if (metatits[i].innerText === '数量') {
+        document.getElementsByClassName('tb-metatit')[i].innerHTML =
+          'Khối lượng';
+      }
+      if (metatits[i].innerText === '化妆品净含量') {
+        document.getElementsByClassName('tb-metatit')[i].innerHTML =
+          'Khối lượng mỹ phẩm';
+      }
+    }
+    document.getElementsByClassName('mui-amount-unit')[0].innerHTML = 'cái';
+  };
+
   render() {
     if (!this.props.settings || !this.props.animation) return null;
     if (this.props.animation.buttonCog) {
@@ -28,6 +96,7 @@ export default class InjectApp extends Component {
       this.classButtonDetail = 'circle ';
       this.classPopupDetail = 'popup popup-visibility-hide';
     }
+
     return (
       <div>
         <div

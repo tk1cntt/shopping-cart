@@ -60,6 +60,9 @@ export default class InjectApp extends Component {
     var div = $('<div>');
     var html = this.priceBox();
     //tm-ind-panel
+    
+    if (document.getElementsById("J_MUIMallbar"))
+      document.getElementsById("J_MUIMallbar")[0].innerHTML = '';
     if (document.getElementsByClassName(rules.info.TMALL.box_after)[0])
       document.getElementsByClassName(rules.info.TMALL.box_after)[0].innerHTML = html;
     // console.log('tmall-box_after', html);
@@ -184,6 +187,17 @@ export default class InjectApp extends Component {
 
     return (
       <div>
+                  <div className="shopping-cart-toolbar-box">
+            <div className="shopping-cart-toolbar">
+              Menu
+            </div>
+            <div className="shopping-cart-box">
+              <p>Product item 1</p>
+              <p>Product item 2</p>
+              <p>Product item 3</p>
+              <p>Product item 4</p>
+            </div>
+          </div>
         <div
           className={
             this.props.settings.button
@@ -197,7 +211,7 @@ export default class InjectApp extends Component {
           }}
         >
           <div className={this.classPopupDetail}>Đã thêm hàng vào giỏ</div>
-          <i className="fa fa-shopping-cart cart"></i>
+          <i className="fa fa-shopping-cart circle-cart"></i>
         </div>
       </div>
     );

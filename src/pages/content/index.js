@@ -196,9 +196,8 @@ export default class InjectApp extends Component {
             store.dispatch({ type: 'TOGGLE-COG', buttonCog: true });
           }}
         >
-          <div className={this.classPopupDetail}>Saved</div>
-          <div className="x-line" />
-          <div className="y-line" />
+          <div className={this.classPopupDetail}>Đã thêm hàng vào giỏ</div>
+          <i className="fa fa-shopping-cart cart"></i>
         </div>
       </div>
     );

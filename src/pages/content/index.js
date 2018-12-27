@@ -4,6 +4,11 @@ import './index.css';
 import { Store } from 'react-chrome-redux';
 import { Provider } from 'react-redux';
 import { connect } from 'react-redux';
+import $ from 'jquery';
+import rules from './rules';
+import tmallProduct from './tmall-product';
+import tmallShop from './tmall-shop';
+import { convertToVND } from './utils';
 
 const store = new Store({
   portName: 'COUNTING'
@@ -17,14 +22,91 @@ export default class InjectApp extends Component {
   }
 
   componentDidMount() {
+    /*
+    var propsElem = $('.tb-metatit');
+    console.log('jquery-propsElem', propsElem);
+    propsElem = $('.tm-sale-prop');
+    //get properties type
+    var propertiesType = '';
+    if ($(propsElem).find('dt.tb-metatit .hidden').length > 0) {
+      $(propsElem).find('dt.tb-metatit .hidden').each(function () {
+        propertiesType += $(this).text() + ';';
+      });
+    } else {
+      $(propsElem).find('dt.tb-metatit').each(function () {
+        propertiesType += $(this).text() + ';';
+      });
+    }
+    console.log('jquery-propertiesType', propertiesType);
+    console.log('rules', rules);
+    // tmall.init();
     setTimeout(() => {
       this.translate();
     }, 3000);
     setTimeout(() => {
       this.convertMoney();
     }, 7000);
+    */
+    setTimeout(() => {
+      this.renderPriceBox();
+    }, 7000);
   }
 
+  renderPriceBox() {
+    const product = tmallProduct.init();
+    const shop = tmallShop.init();
+    console.log('tmall-product', product);
+    console.log('tmall-shop', shop);
+    var div = $('<div>');
+    var html = this.priceBox();
+    //tm-ind-panel
+    if (document.getElementsByClassName(rules.info.TMALL.box_after)[0])
+      document.getElementsByClassName(rules.info.TMALL.box_after)[0].innerHTML = html;
+    // console.log('tmall-box_after', html);
+    // $(div).html(html);
+    // $(div).addClass('tm-clear');
+    // console.log('tmall-box_after', $(rules.info.TMALL.box_after));
+    // $(rules.info.TMALL.box_after).after($(html));
+    // $('.chipo-box-info #stock').text(product.stock);
+    if (product.itemPrice) {
+      $('.chipo-box-info #sell_price').text(product.itemPrice);
+    } else {
+      $('.chipo-box-info #sell_price').text(
+        convertToVND(product.itemPriceNDT) + 'đ'
+      );
+    }
+    if ($('#J_Sold-out-recommend').length) {
+      $('.chipo-warning').text('Sản phẩm này đã hết hàng');
+    }
+  }
+
+  priceBox() {
+    const html = `
+      <div className="tm-clear">
+        <div className="chipo-box-info">
+          <div className="chipo-basic-info">
+            <ul>
+              <li>
+                Giá bán:${' '}
+                <span id="sell_price" className="text-chipo">
+                  372.060đ
+                </span>
+              </li>
+              <li>
+                Tỷ giá 1<span className="chipo-yen">¥</span>:${' '}
+                <span id="exchange_rate" className="text-chipo">
+                  3.445đ
+                </span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      `;
+    return html;
+  }
+
+  /*
   checkMultiPrice(input) {
     return /(\d+\.\d{1,2})-(\d+\.\d{1,2})/.test(input);
   }
@@ -84,6 +166,7 @@ export default class InjectApp extends Component {
       document.getElementsByClassName('mui-amount-unit')[0].innerHTML =
         'Sản phẩm';
   };
+  */
 
   render() {
     if (!this.props.settings || !this.props.animation) return null;

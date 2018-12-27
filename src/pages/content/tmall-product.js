@@ -11,7 +11,7 @@ const getProductId = () => {
   if (!id) {
     var path = window.location.pathname;
     id = /item\/(.+)\.htm/i.exec(path);
-    return id[1];
+    return id ? id[1] : '';
   }
   return id ? id : '';
 };

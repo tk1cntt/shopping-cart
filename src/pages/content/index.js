@@ -17,6 +17,10 @@ const store = new Store({
 export default class InjectApp extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      products: [],
+      isShow: false
+    };
     this.classButtonDetail = '';
     this.classPopupDetail = '';
   }
@@ -48,23 +52,43 @@ export default class InjectApp extends Component {
     }, 7000);
     */
     setTimeout(() => {
+      $('.sufei-dialog').css('display', 'none');
+    }, 100);
+    setTimeout(() => {
       this.renderPriceBox();
     }, 7000);
   }
 
+  showShoppingCart = value => {
+    this.setState({
+      isShow: value
+    });
+  };
+
   renderPriceBox() {
     const product = tmallProduct.init();
+    const products = [];
+    products.push(product);
+    products.push(product);
+    products.push(product);
+    products.push(product);
+    this.setState({
+      products
+    });
     const shop = tmallShop.init();
     console.log('tmall-product', product);
     console.log('tmall-shop', shop);
     var div = $('<div>');
     var html = this.priceBox();
-    //tm-ind-panel
-    
-    if (document.getElementsById("J_MUIMallbar"))
-      document.getElementsById("J_MUIMallbar")[0].innerHTML = '';
+    // tm-ind-panel
+    //
+
+    // if (document.getElementsById('J_MUIMallbar'))
+    //   document.getElementsById('J_MUIMallbar')[0].innerHTML = '';
     if (document.getElementsByClassName(rules.info.TMALL.box_after)[0])
-      document.getElementsByClassName(rules.info.TMALL.box_after)[0].innerHTML = html;
+      document.getElementsByClassName(
+        rules.info.TMALL.box_after
+      )[0].innerHTML = html;
     // console.log('tmall-box_after', html);
     // $(div).html(html);
     // $(div).addClass('tm-clear');
@@ -171,6 +195,41 @@ export default class InjectApp extends Component {
   };
   */
 
+  productListForm() {
+    const productListDom = this.state.products.map((item, index) => (
+      <div key={`entity-${item.itemId}-${index}`} className="cart-item">
+        <a target="_blank" rel="noopener noreferrer" href={item.itemLink}>
+          <div>
+            <img src={item.itemImage} alt={item.itemName} />
+          </div>
+          <div>
+            <div>2.000.000đ</div>
+          </div>
+        </a>
+      </div>
+    ));
+    return productListDom;
+  }
+
+  shoppingBox() {
+    return (
+      <div
+        className={`${
+          this.state.isShow
+            ? 'shopping-cart-box visible'
+            : 'shopping-cart-box hidden'
+        }`}
+      >
+        <i
+          className="fa fa-times shopping-cart-close"
+          onClick={() => this.showShoppingCart(false)}
+        />
+        <div className="checkout">Thanh toán</div>
+        {this.productListForm()}
+      </div>
+    );
+  }
+
   render() {
     if (!this.props.settings || !this.props.animation) return null;
     if (this.props.animation.buttonCog) {
@@ -187,17 +246,10 @@ export default class InjectApp extends Component {
 
     return (
       <div>
-                  <div className="shopping-cart-toolbar-box">
-            <div className="shopping-cart-toolbar">
-              Menu
-            </div>
-            <div className="shopping-cart-box">
-              <p>Product item 1</p>
-              <p>Product item 2</p>
-              <p>Product item 3</p>
-              <p>Product item 4</p>
-            </div>
-          </div>
+        {this.shoppingBox()}
+        <div className="shopping-cart-toolbar-box">
+          <div className="shopping-cart-toolbar">Menu</div>
+        </div>
         <div
           className={
             this.props.settings.button
@@ -208,10 +260,11 @@ export default class InjectApp extends Component {
           onClick={() => {
             store.dispatch({ type: 'ADD-FROM-BUTTON', addFromButton: true });
             store.dispatch({ type: 'TOGGLE-COG', buttonCog: true });
+            this.showShoppingCart(!this.state.isShow);
           }}
         >
           <div className={this.classPopupDetail}>Đã thêm hàng vào giỏ</div>
-          <i className="fa fa-shopping-cart circle-cart"></i>
+          <i className="fa fa-shopping-cart circle-cart" />
         </div>
       </div>
     );

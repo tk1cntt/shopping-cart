@@ -15,10 +15,10 @@ function formatMoney(price) {
 }
 
 /**
-   * convert NDT price to VND
-   * @param {string} price
-   * @return {string} return converted price
-   */
+ * convert NDT price to VND
+ * @param {string} price
+ * @return {string} return converted price
+ */
 export const convertToVND = price => {
   if (checkMultiPrice(price)) {
     var prices = price.split('-');
@@ -33,22 +33,19 @@ export const convertToVND = price => {
 };
 
 /**
-   * Get name of the site
-   * @return {string} return site name or rmpty string
-   */
+ * Get name of the site
+ * @return {string} return site name or rmpty string
+ */
 export const getSiteName = () => {
-    var url = window.location.href;
-    if (url.match(/item.taobao/) || url.match(/taobao.com\/item\//)) {
-      return 'TAOBAO';
-    }
-    if (url.match(/detail.tmall/) || url.match(/tmall.com\/item\//)) {
-      return 'TMALL';
-    }
-    if (
-      url.match(/detail.1688/) ||
-      url.match(/[d]+[e]+[t]+[a]+[i]+[l]+.1688/)
-    ) {
-      return 'cn1688';
-    }
-    return '';
-  };
+  var url = window.location.href;
+  if (url.match(/item.taobao/) || url.match(/taobao.com\/item\//)) {
+    return 'TAOBAO';
+  }
+  if (url.match(/detail.tmall/) || url.match(/tmall.com\/item\//)) {
+    return 'TMALL';
+  }
+  if (url.match(/detail.1688/) || url.match(/[d]+[e]+[t]+[a]+[i]+[l]+.1688/)) {
+    return 'cn1688';
+  }
+  return '';
+};

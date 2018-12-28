@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import { render } from 'react-dom';
 import './index.css';
 import { Store } from 'react-chrome-redux';
-import { Provider } from 'react-redux';
-import { connect } from 'react-redux';
+import { Provider, connect } from 'react-redux';
 import $ from 'jquery';
+import { Button } from 'antd';
 import rules from './rules';
 import tmallProduct from './tmall-product';
 import tmallShop from './tmall-shop';
@@ -195,6 +195,15 @@ export default class InjectApp extends Component {
   };
   */
 
+  addToCart = () => {
+    const product = tmallProduct.init();
+    const products = this.state.products;
+    products.push(product);
+    this.setState({
+      products
+    });
+  };
+
   productListForm() {
     const productListDom = this.state.products.map((item, index) => (
       <div key={`entity-${item.itemId}-${index}`} className="cart-item">
@@ -230,6 +239,28 @@ export default class InjectApp extends Component {
     );
   }
 
+  toolbar() {
+    return (
+      <div className="shopping-cart-toolbar-box">
+        <div className="shopping-cart-toolbar">
+          <Button
+            type="primary"
+            onClick={() => {
+              store.dispatch({ type: 'TOGGLE-COG', buttonCog: true });
+              this.addToCart();
+            }}
+          >
+            Đặt hàng
+          </Button>
+          <Button type="primary" onClick={() => this.showShoppingCart(true)}>
+            Xem giỏ hàng
+          </Button>
+          <Button type="primary">Thanh toán</Button>
+        </div>
+      </div>
+    );
+  }
+
   render() {
     if (!this.props.settings || !this.props.animation) return null;
     if (this.props.animation.buttonCog) {
@@ -247,9 +278,7 @@ export default class InjectApp extends Component {
     return (
       <div>
         {this.shoppingBox()}
-        <div className="shopping-cart-toolbar-box">
-          <div className="shopping-cart-toolbar">Menu</div>
-        </div>
+        {this.toolbar()}
         <div
           className={
             this.props.settings.button
@@ -258,8 +287,8 @@ export default class InjectApp extends Component {
           }
           accessKey="s"
           onClick={() => {
-            store.dispatch({ type: 'ADD-FROM-BUTTON', addFromButton: true });
-            store.dispatch({ type: 'TOGGLE-COG', buttonCog: true });
+            // store.dispatch({ type: 'ADD-FROM-BUTTON', addFromButton: true });
+            // store.dispatch({ type: 'TOGGLE-COG', buttonCog: true });
             this.showShoppingCart(!this.state.isShow);
           }}
         >

@@ -1,5 +1,5 @@
 import { applyMiddleware, createStore } from 'redux';
-import { wrapStore, alias } from 'react-chrome-redux';
+import { wrapStore, alias } from 'webext-redux';
 import { createLogger } from 'redux-logger';
 import thunk from 'redux-thunk';
 import reducer from './reducers';

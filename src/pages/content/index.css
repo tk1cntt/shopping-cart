@@ -115,6 +115,7 @@
 .shopping-cart-box {
   position: fixed;
   background-color: #fff;
+  top: 50%;
   width: 200px;
   min-height: 200px;
   max-height: 500px;

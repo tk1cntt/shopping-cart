@@ -1,4 +1,4 @@
-import { Store } from 'react-chrome-redux';
+import { Store } from 'webext-redux';
 import React, { Component } from 'react';
 import './settings.css';
 import './App';

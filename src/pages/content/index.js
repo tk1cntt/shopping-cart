@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { render } from 'react-dom';
 import './index.css';
-import { Store } from 'react-chrome-redux';
+import { Store } from 'webext-redux';
 import { Provider, connect } from 'react-redux';
 import $ from 'jquery';
 import { Button } from 'antd';
@@ -19,7 +19,7 @@ export default class InjectApp extends Component {
     super(props);
     this.state = {
       products: [],
-      isShow: false
+      isShow: true
     };
     this.classButtonDetail = '';
     this.classPopupDetail = '';
@@ -55,8 +55,10 @@ export default class InjectApp extends Component {
       $('.sufei-dialog').css('display', 'none');
     }, 100);
     setTimeout(() => {
+      this.translate('TMALL');
+      $('#J_MUIMallbar').html('');
       this.renderPriceBox();
-    }, 7000);
+    }, 3000);
   }
 
   showShoppingCart = value => {
@@ -195,6 +197,68 @@ export default class InjectApp extends Component {
   };
   */
 
+  /**
+   * add translation
+   * @param {string} domain
+   */
+  translate(domain) {
+    var text;
+    if (!$(rules.translate[domain].basePrice).find('.hidden').length) {
+      $(rules.translate[domain].basePrice).each(function() {
+        text = $(this).text();
+        $(this).html("<span class='hidden'>" + text + '</span>Giá');
+      });
+    }
+    if (!$(rules.translate[domain].promoPrice).find('.hidden').length) {
+      $(rules.translate[domain].promoPrice).each(function() {
+        text = $(this).text();
+        $(this).html("<span class='hidden'>" + text + '</span>Khuyến mại');
+      });
+    }
+    if (!$(rules.translate[domain].stock).find('.hidden').length) {
+      $(rules.translate[domain].stock).each(function() {
+        text = $(this).text();
+        $(this).html("<span class='hidden'>" + text + '</span>Số lượng');
+      });
+    }
+    if (!$(rules.translate[domain].product).find('.hidden').length) {
+      $(rules.translate[domain].product).each(function() {
+        text = $(this).text();
+        $(this).html("<span class='hidden'>" + text + '</span>Sản phẩm');
+      });
+    }
+    if (!$(rules.translate[domain].size).find('.hidden').length) {
+      $(rules.translate[domain].size).each(function() {
+        text = $(this).text();
+        $(this).html("<span class='hidden'>" + text + '</span>Kích cỡ');
+      });
+    }
+    if (!$(rules.translate[domain].color).find('.hidden').length) {
+      $(rules.translate[domain].color).each(function() {
+        text = $(this).text();
+        $(this).html("<span class='hidden'>" + text + '</span>Màu sắc');
+      });
+    }
+    if (!$(rules.translate[domain].stock_str).find('.hidden').length) {
+      $(rules.translate[domain].stock_str).each(function() {
+        text = $(this).text();
+        var stock = text ? /[\d]+/.exec(text)[0] : 0;
+        $(this).html(
+          "<span class='hidden'>" + text + '</span> (Còn ' + stock + ' sản phẩm)'
+        );
+      });
+    }
+    if (
+      rules.translate[domain].condition &&
+      !$(rules.translate[domain].condition).find('.hidden').length
+    ) {
+      $(rules.translate[domain].condition).each(function() {
+        text = $(this).text();
+        $(this).html("<span class='hidden'>" + text + '</span>Điều kiện');
+      });
+    }
+  }
+
   addToCart = () => {
     const product = tmallProduct.init();
     const products = this.state.products;
@@ -262,6 +326,8 @@ export default class InjectApp extends Component {
   }
 
   render() {
+    console.log(this.props.settings);
+    console.log(this.props.animation);
     if (!this.props.settings || !this.props.animation) return null;
     if (this.props.animation.buttonCog) {
       this.classButtonDetail = 'circle faa-tada ';

@@ -70,33 +70,21 @@ export default class InjectApp extends Component {
   renderPriceBox() {
     const product = tmallProduct.init();
     const products = [];
-    products.push(product);
-    products.push(product);
-    products.push(product);
-    products.push(product);
-    this.setState({
-      products
-    });
+    if (product) {
+      products.push(product);
+      this.setState({
+        products
+      });
+    }
     const shop = tmallShop.init();
     console.log('tmall-product', product);
     console.log('tmall-shop', shop);
-    var div = $('<div>');
+    var priceBox = $('<div>');
     var html = this.priceBox();
-    // tm-ind-panel
-    //
-
-    // if (document.getElementsById('J_MUIMallbar'))
-    //   document.getElementsById('J_MUIMallbar')[0].innerHTML = '';
-    if (document.getElementsByClassName(rules.info.TMALL.box_after)[0])
-      document.getElementsByClassName(
-        rules.info.TMALL.box_after
-      )[0].innerHTML = html;
-    // console.log('tmall-box_after', html);
-    // $(div).html(html);
-    // $(div).addClass('tm-clear');
-    // console.log('tmall-box_after', $(rules.info.TMALL.box_after));
-    // $(rules.info.TMALL.box_after).after($(html));
-    // $('.chipo-box-info #stock').text(product.stock);
+    $(priceBox).html(html);
+    // $(priceBox).addClass('tm-clear');
+    $(rules.info.TMALL.box_after).after($(priceBox));
+    $('.chipo-box-info #stock').text(product.stock);
     if (product.itemPrice) {
       $('.chipo-box-info #sell_price').text(product.itemPrice);
     } else {
@@ -261,11 +249,15 @@ export default class InjectApp extends Component {
 
   addToCart = () => {
     const product = tmallProduct.init();
+    console.log("Add product to cart", product);
     const products = this.state.products;
-    products.push(product);
-    this.setState({
-      products
-    });
+    if (product) {
+      products.push(product);
+      this.setState({
+        products
+      });
+    }
+    // tmallProduct.getProductProperties(product);
   };
 
   productListForm() {
@@ -273,7 +265,7 @@ export default class InjectApp extends Component {
       <div key={`entity-${item.itemId}-${index}`} className="cart-item">
         <a target="_blank" rel="noopener noreferrer" href={item.itemLink}>
           <div>
-            <img src={item.itemImage} alt={item.itemName} />
+            <img src={item.propetiesImage} width="100px" height="100px" alt={item.itemName} />
           </div>
           <div>
             <div>2.000.000đ</div>
@@ -326,8 +318,8 @@ export default class InjectApp extends Component {
   }
 
   render() {
-    console.log(this.props.settings);
-    console.log(this.props.animation);
+    // console.log(this.props.settings);
+    // console.log(this.props.animation);
     if (!this.props.settings || !this.props.animation) return null;
     if (this.props.animation.buttonCog) {
       this.classButtonDetail = 'circle faa-tada ';

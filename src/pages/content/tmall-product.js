@@ -135,6 +135,7 @@ const getSelectStock = () => {
  */
 const getProductProperties = product => {
   var propsElem = $('.tm-sale-prop');
+  // console.log('getProductProperties', propsElem);
   //get properties type
   var propertiesType = '';
   if ($(propsElem).find('dt.tb-metatit .hidden').length > 0) {
@@ -192,7 +193,7 @@ const getProductProperties = product => {
       if (elem.attr('style')) {
         var imgUrl = elem.attr('style').match(/\/\/.+\..+\.[\w]{3,4}/g);
         imgUrl = imgUrl[0].replace(/[\d]+x[\d]+/, '500x500');
-        propertiesImages += 'http:' + imgUrl + ';';
+        propertiesImages += 'https:' + imgUrl + ';';
       }
     }
     // asign to product
@@ -237,6 +238,8 @@ const init = () => {
   } else {
     product = calculateTotal(product);
   }
+  product = getProductProperties(product);
+  // updateView();
   //check for first time run
   /*
   if (!self.first) {
@@ -244,7 +247,7 @@ const init = () => {
   } else {
     product.updateView = prod.updateView;
   }
-  */
+  //*/
   return product;
 };
 

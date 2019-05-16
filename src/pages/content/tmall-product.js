@@ -96,10 +96,10 @@ const updateView = () => {
   } else {
     priceVnd = convertToVND(price) + 'đ';
   }
-  $('.chipo-box-info #sell_price').text(priceVnd);
+  $('#chipo-price #sell_price').text(priceVnd);
 
   var stock = getSelectStock();
-  $('.chipo-box-info #stock').text(stock);
+  $('#chipo-price #stock').text(stock);
 };
 
 /**
@@ -238,7 +238,7 @@ const init = () => {
   } else {
     product = calculateTotal(product);
   }
-  product = getProductProperties(product);
+  // product = getProductProperties(product);
   // updateView();
   //check for first time run
   /*

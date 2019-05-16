@@ -135,10 +135,17 @@
   overflow-y: scroll;
 }
 
-.chipo-box-info {
-  padding: 10px;
+#chipo-price {
+  display: inline-block;
+  background-color: #b8e5f9;
+  opacity: 0.95;
+  color: #a94442;
+  font-size: 28px;
+  box-shadow: none;
+  padding: 15px;
+  width: 510px;
 }
 
-.chipo-box-info #sell_price {
+#chipo-price #sell_price {
   color: #f5222d;
 }

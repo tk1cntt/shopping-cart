@@ -1,5 +1,5 @@
 const defaultState = {
-  button: false,
+  button: true,
   buttonHystory: true,
   expireDate: 86400000 // 1 day
 };

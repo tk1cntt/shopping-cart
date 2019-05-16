@@ -19,46 +19,44 @@ export default class InjectApp extends Component {
     super(props);
     this.state = {
       products: [],
-      isShow: true
+      isShow: false
     };
     this.classButtonDetail = '';
     this.classPopupDetail = '';
   }
 
   componentDidMount() {
-    /*
-    var propsElem = $('.tb-metatit');
-    console.log('jquery-propsElem', propsElem);
-    propsElem = $('.tm-sale-prop');
-    //get properties type
-    var propertiesType = '';
-    if ($(propsElem).find('dt.tb-metatit .hidden').length > 0) {
-      $(propsElem).find('dt.tb-metatit .hidden').each(function () {
-        propertiesType += $(this).text() + ';';
-      });
-    } else {
-      $(propsElem).find('dt.tb-metatit').each(function () {
-        propertiesType += $(this).text() + ';';
-      });
-    }
-    console.log('jquery-propertiesType', propertiesType);
-    console.log('rules', rules);
-    // tmall.init();
-    setTimeout(() => {
-      this.translate();
-    }, 3000);
-    setTimeout(() => {
-      this.convertMoney();
-    }, 7000);
-    */
     setTimeout(() => {
       $('.sufei-dialog').css('display', 'none');
-    }, 100);
-    setTimeout(() => {
       this.translate('TMALL');
       $('#J_MUIMallbar').html('');
       this.renderPriceBox();
-    }, 3000);
+      setInterval(function() {
+        // if (tmallProduct.updateView) {
+          tmallProduct.updateView();
+          /*
+          console.log("tmallProduct.updateView");
+          var priceBox = $("#chipo-price");
+          // console.log(priceBox.html());
+          //*
+          var price = tmallProduct.getProductPrice();
+          console.log("tmallProduct.price", price);
+          var priceVnd = '';
+          if (Array.isArray(price) && price.length > 1) {
+            priceVnd = convertToVND(price[0]) + ' đ - ' + convertToVND(price[1]) + 'đ';
+          } else {
+            priceVnd = convertToVND(price) + 'đ';
+          }
+          console.log("tmallProduct.priceVnd", priceVnd);
+          $('#chipo-price #sell_price').text(priceVnd);
+
+          var stock = tmallProduct.getSelectStock();
+          console.log("tmallProduct.stock", stock);
+          $('#chipo-price #stock').text(stock);
+          //*/
+        // }
+      }, 2000);
+    }, 100);
   }
 
   showShoppingCart = value => {
@@ -75,50 +73,43 @@ export default class InjectApp extends Component {
       this.setState({
         products
       });
-    }
-    const shop = tmallShop.init();
-    console.log('tmall-product', product);
-    console.log('tmall-shop', shop);
-    var priceBox = $('<div>');
-    var html = this.priceBox();
-    $(priceBox).html(html);
-    // $(priceBox).addClass('tm-clear');
-    $(rules.info.TMALL.box_after).after($(priceBox));
-    $('.chipo-box-info #stock').text(product.stock);
-    if (product.itemPrice) {
-      $('.chipo-box-info #sell_price').text(product.itemPrice);
-    } else {
-      $('.chipo-box-info #sell_price').text(
-        convertToVND(product.itemPriceNDT) + 'đ'
-      );
-    }
-    if ($('#J_Sold-out-recommend').length) {
-      $('.chipo-warning').text('Sản phẩm này đã hết hàng');
+      const shop = tmallShop.init();
+      console.log('tmall-product', product);
+      // console.log('tmall-shop', shop);
+      var priceBox = $('<div id="chipo-price">');
+      var html = this.priceBox();
+      $(priceBox).html(html);
+      $(rules.info.TMALL.box_after).after($(priceBox));
+      $('#chipo-price #stock').text(product.stock);
+      if (product.itemPrice) {
+        $('#chipo-price #sell_price').text(product.itemPrice);
+      } else {
+        $('#chipo-price #sell_price').text(
+          convertToVND(product.itemPriceNDT) + 'đ'
+        );
+      }
+      if ($('#J_Sold-out-recommend').length) {
+        $('.chipo-warning').text('Sản phẩm này đã hết hàng');
+      }
     }
   }
 
   priceBox() {
     const html = `
-      <div className="tm-clear">
-        <div className="chipo-box-info">
-          <div className="chipo-basic-info">
-            <ul>
-              <li>
-                Giá bán:${' '}
-                <span id="sell_price" className="text-chipo">
-                  372.060đ
-                </span>
-              </li>
-              <li>
-                Tỷ giá 1<span className="chipo-yen">¥</span>:${' '}
-                <span id="exchange_rate" className="text-chipo">
-                  3.445đ
-                </span>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
+    <ul>
+      <li>
+        Giá bán:${' '}${' '}
+        <span id="sell_price" className="text-chipo">
+          372.060${' '}đ
+        </span>
+      </li>
+      <li>
+        Tỷ giá 1<span className="chipo-yen">¥</span>:${' '}
+        <span id="exchange_rate" className="text-chipo">
+          3.445${' '}đ
+        </span>
+      </li>
+    </ul>  
       `;
     return html;
   }
@@ -160,28 +151,6 @@ export default class InjectApp extends Component {
       document.getElementsByClassName('tm-price')[0].innerHTML =
         convertPrice + 'đ';
     }
-  };
-
-  translate = () => {
-    if (document.getElementsByClassName('tb-metatit')) {
-      var metatits = document.getElementsByClassName('tb-metatit');
-      var i = 0;
-      for (i = 0; i < metatits.length; i++) {
-        console.log(metatits[i]);
-        if (metatits[i].innerText === '数量') {
-          document.getElementsByClassName('tb-metatit')[i].innerHTML =
-            'Khối lượng';
-        }
-        if (metatits[i].innerText === '化妆品净含量') {
-          document.getElementsByClassName('tb-metatit')[i].innerHTML =
-            'Khối lượng mỹ phẩm';
-        }
-      }
-    }
-
-    if (document.getElementsByClassName('mui-amount-unit')[0])
-      document.getElementsByClassName('mui-amount-unit')[0].innerHTML =
-        'Sản phẩm';
   };
   */
 
@@ -230,10 +199,14 @@ export default class InjectApp extends Component {
     if (!$(rules.translate[domain].stock_str).find('.hidden').length) {
       $(rules.translate[domain].stock_str).each(function() {
         text = $(this).text();
-        var stock = text ? /[\d]+/.exec(text)[0] : 0;
-        $(this).html(
-          "<span class='hidden'>" + text + '</span> (Còn ' + stock + ' sản phẩm)'
-        );
+        if (text !== "库存件") {
+          var stock = text ? /[\d]+/.exec(text) ? /[\d]+/.exec(text)[0] : 0 : 0;
+          if (stock !== 0) {
+            $(this).html(
+              "<span class='hidden'>" + text + '</span> (Còn ' + stock + ' sản phẩm)'
+            );
+          }
+        }
       });
     }
     if (
@@ -248,16 +221,17 @@ export default class InjectApp extends Component {
   }
 
   addToCart = () => {
-    const product = tmallProduct.init();
-    console.log("Add product to cart", product);
-    const products = this.state.products;
+    let product = tmallProduct.init();
     if (product) {
+      const products = this.state.products;
+      // TODO: Recalculate data
+      product = tmallProduct.getProductProperties(product);
+      this.props.dispatch({ type: 'TOGGLE-COG', buttonCog: true });
       products.push(product);
       this.setState({
         products
       });
     }
-    // tmallProduct.getProductProperties(product);
   };
 
   productListForm() {
@@ -265,10 +239,15 @@ export default class InjectApp extends Component {
       <div key={`entity-${item.itemId}-${index}`} className="cart-item">
         <a target="_blank" rel="noopener noreferrer" href={item.itemLink}>
           <div>
-            <img src={item.propetiesImage} width="100px" height="100px" alt={item.itemName} />
+            <img
+              src={item.propetiesImage ? item.propetiesImage : item.itemImage} 
+              width="100px"
+              height="100px" 
+              alt={item.itemName} 
+            />
           </div>
           <div>
-            <div>2.000.000đ</div>
+            <div>¥{item.totalAmountNDT}</div>
           </div>
         </a>
       </div>
@@ -302,7 +281,6 @@ export default class InjectApp extends Component {
           <Button
             type="primary"
             onClick={() => {
-              store.dispatch({ type: 'TOGGLE-COG', buttonCog: true });
               this.addToCart();
             }}
           >
@@ -318,9 +296,6 @@ export default class InjectApp extends Component {
   }
 
   render() {
-    // console.log(this.props.settings);
-    // console.log(this.props.animation);
-    if (!this.props.settings || !this.props.animation) return null;
     if (this.props.animation.buttonCog) {
       this.classButtonDetail = 'circle faa-tada ';
       this.classPopupDetail = 'popup popup-visibility-show ';
@@ -345,8 +320,6 @@ export default class InjectApp extends Component {
           }
           accessKey="s"
           onClick={() => {
-            // store.dispatch({ type: 'ADD-FROM-BUTTON', addFromButton: true });
-            // store.dispatch({ type: 'TOGGLE-COG', buttonCog: true });
             this.showShoppingCart(!this.state.isShow);
           }}
         >
